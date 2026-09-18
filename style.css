@@ -1,51 +1,90 @@
+/* Muuka's design language, for the web: warm stone page, white grouped
+   cards with inset 1px dividers, Manrope, the 34pt title block, the tick
+   row, and tiles as navigation. Light and dark, like the app. */
 :root {
   --ink: #18181b;
+  --on-ink: #ffffff;
   --muted: #6e6e6e;
   --bg: #eae7e2;
   --card: #ffffff;
   --divider: #e2dfd9;
+  --track: #f0eeeb;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --ink: #f2f0eb;
+    --on-ink: #18181b;
     --muted: #9a968e;
     --bg: #141311;
     --card: #1f1d1a;
     --divider: #2e2b27;
+    --track: #2a2825;
   }
 }
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-main {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 56px 20px 96px;
+main { max-width: 560px; margin: 0 auto; padding: 32px 20px 96px; }
+
+/* Brand block — "Muuka" over the date, top left, as on every screen. */
+.brand { display: block; text-decoration: none; color: var(--ink); margin-bottom: 40px; }
+.brand b { display: block; font-weight: 700; font-size: 17px; line-height: 1.2; }
+.brand span { font-size: 12px; }
+
+/* Title block. */
+h1 { font-weight: 800; font-size: 34px; line-height: 1.15; margin: 0 0 4px; letter-spacing: -0.01em; }
+.subtitle { font-weight: 500; font-size: 14px; color: var(--muted); margin: 0; }
+
+/* The tick row: 3pt ticks, 13pt tall, 3pt apart; lit ink, the rest at 22%. */
+.ticks { display: flex; gap: 3px; height: 13px; margin: 18px 0 0; overflow: hidden; }
+.ticks i { flex: 0 0 3px; border-radius: 1.5px; background: var(--ink); opacity: 0.22; }
+.ticks i.on { opacity: 1; animation: lit 1.1s cubic-bezier(0.25, 1, 0.5, 1) both; }
+@keyframes lit { from { opacity: 0.22; } to { opacity: 1; } }
+
+/* Tiles, as in the app's filter strip: the current page is ink. */
+.tiles { display: flex; gap: 8px; margin: 24px 0 28px; }
+.tile {
+  flex: 0 0 auto; min-width: 116px; height: 92px; padding: 14px;
+  border-radius: 20px; background: var(--card); color: var(--ink);
+  display: flex; flex-direction: column; justify-content: space-between;
+  text-decoration: none; transition: transform 0.12s ease;
 }
-.brand { font-weight: 700; font-size: 17px; text-decoration: none; color: var(--ink); }
-.brand small { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
-h1 { font-weight: 800; font-size: 34px; line-height: 1.15; margin: 40px 0 8px; }
-.lede { font-weight: 300; font-size: 22px; line-height: 1.35; color: var(--muted); margin: 0 0 32px; }
-h2 { font-weight: 700; font-size: 17px; margin: 0 0 8px; }
-section {
-  background: var(--card);
-  border-radius: 20px;
-  padding: 20px;
-  margin: 0 0 12px;
+.tile:active { transform: scale(0.97); }
+.tile.on { background: var(--ink); color: var(--on-ink); }
+.tile svg { width: 22px; height: 22px; }
+.tile b { display: block; font-weight: 600; font-size: 13px; }
+.tile small { font-weight: 500; font-size: 12px; opacity: 0.7; }
+
+/* Section heading outside the card, like "This month". */
+.head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px; margin: 28px 0 10px; }
+.head h2 { font-weight: 700; font-size: 17px; margin: 0; }
+.head span { font-weight: 500; font-size: 13px; color: var(--muted); }
+
+/* Grouped rows on one surface, inset dividers. */
+.group { background: var(--card); border-radius: 20px; overflow: hidden; }
+.row { position: relative; padding: 14px 18px; }
+.row + .row::before { content: ''; position: absolute; top: 0; left: 18px; right: 18px; height: 1px; background: var(--divider); }
+.row b { display: block; font-weight: 600; font-size: 15px; }
+.row p { margin: 2px 0 0; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.row.plain p { color: var(--ink); font-size: 15px; line-height: 1.55; margin: 0; }
+.row.plain p + p { margin-top: 10px; }
+.row a { color: var(--ink); }
+.row a.pill { color: var(--on-ink); }
+
+/* The ink pill — the app's one kind of button. */
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 12px;
+  padding: 12px 18px; border-radius: 999px; background: var(--ink); color: var(--on-ink);
+  font-weight: 600; font-size: 14px; text-decoration: none;
 }
-section p, section ul { margin: 0 0 10px; }
-section p:last-child, section ul:last-child { margin-bottom: 0; }
-ul { padding-left: 20px; }
-a { color: var(--ink); }
-dt { font-weight: 700; margin-top: 14px; }
-dt:first-child { margin-top: 0; }
-dd { margin: 2px 0 0; color: var(--muted); }
-footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
-footer a { color: var(--muted); }
+.pill svg { width: 16px; height: 16px; }
+
+.foot { font-size: 12px; color: var(--muted); padding: 0 4px; margin-top: 14px; }
